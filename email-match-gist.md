@@ -61,19 +61,44 @@ Similar to how we explain the above summary, when it comes to our purposes of ma
 
 In essense, Quantifiers tell you what to look for to match an OR Operator. See [OR Operator](#the-or-operator) to learn more.
 
-### Grouping Constructs
-
 ### Bracket Expressions
 
 Bracket Expressions are unique in the fact that they represent range of characters we want to match. You may hear them referred to as positive character groups as well as they outline the characters that are qualified to be included. There are a few different ways we can construct characters within Bracket Expressions that give the ability to look for a range or specific characters. For example, we can write [xyz] which will look for x.y,z regardless of how long the string is. We could also write [x-z] which will look for for x,y,z just like before, regardless of the how long the string is. It just identifies a range so you can shorten your writen expression and don't have to type each character within the range. You can do this with numerical or special characters as well. Example: [0-9], or [#!&]. Keep in mind, if you want to allow for Meta Characters ie. capital letters, you must identify as such like shown [a-zA-Z]. For our purposes of matching an email, you can put these together similar to: [a-zA-Z0-9#!&].
 
 ### Character Classes
 
+A character class defines a set of characters any of which can occur in an string to fulfill a string and is a set of characters enclosed within bracket expressions. Common Character classes can include:
+
+- period (.) that matches any character expect a newline character
+- \d - matches any numberal digit. If you refer back to segment 2 in the summary, this is equivilent to the bracket expression [0-9].
+- \w - matches any alphanumeric character including the underscore symbol. It can be equivilenent to [A-Za-z0-9] used often to verify usernames.
+- \s - matches a single whitespace character which can include those such as tabs and line breaks.
+
+### Character Escapes
+
+the backslash (\) used within a regex will escape a character that otherwise would be interpreted as its literal expression. Before we get into an example, it's important to note, all special characters including the backslash lose their otherwise specific significance inside bracket expressions. An example of a character escape would be if you have an open curly brace such as what we have in our email validation regex defining a quantifier but instead you put a backslash infront of the curly brace. It would then look like this (\{) and would signify to the regex it should look for the open curly brace character within the string instead of identifying the quantifier. Character escapes are commonly used when looking for strings that have special characters that are the same as a specific component within the regex, such as our quantifer above. You'd want to distinguish between the types of curly braces used and their responsibilities within the regex.
+
+### Grouping Constructs
+
+An email validation regex can be fairly open ended with what it accepts in regards to number of character matches per segment as outlined within the summary above however, as you grow with regular expressions and they become more complex, you may run into having to check multiple parts of a string to setermine if the different sections fulfill their differentiating requirements. This is where grouping constructs come in. The main way we group a section is by using parentheses (), within gropuing constructs these sections will become your subexpressions. An example of this is (hij):(tuv):(xyz). The first section looks for a string matching 'hij', the second looks for 'tuv', and the third looks for 'xyz'. The colon between these helps when matching each section string and seperating the subexpressions. The aforementioned string would look for 'hij:tuv:xyz' which would match, however the string 'ijh:uvt:xzy' would not. Order matters and an exact match is necessary unless the regex is told otherwise by an OR operator. We'll learn more about OR operators within the next section.
+
 ### The OR Operator
+
+Although we do not have an OR Operator within our email validation regex, you could use them if looking to identify a specific top level domain. They pair very well with Grouping Constructs when things get more complex. In essense, the OR Operator (|) can seperate a string such as [xyz] to [x|y|z]. Often you want to add the same login outside of the bracket expression.
 
 ### Flags
 
-### Character Escapes
+Our current email validation regex does not use any flags however they are still beneficial to know. Typically regex must be wrapped in slash characters however, the one expection is when flags are placed at THE END of the regex, after the second slash. Flags identify additional functionality or limitations for the regex. THere are six optional flags total and they can be used seperatly, together, and in any order. The main three you may encounter are:
+
+- g - global search where the regex can be tested against all possible matches in a string.
+- i - case INSENSITIVE search where the case should be ignored while attempting the match the string.
+- m - multiline search where a mltiline input string should be treated as multple lines.
+
+The other three include:
+
+- s - called a Dot All and makes the character a while character
+- y - called a Sticky which makes the expression start is search from the index indiviated in the lastIndex property
+- u - called a Unicode that makes the expression assume individual characters as code points not as code unites.
 
 ### Resources
 
